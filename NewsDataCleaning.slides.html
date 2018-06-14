@@ -11905,17 +11905,53 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Using-News-API-we-can-get-more-information-about-the-market">Using News API we can get more information about the market<a class="anchor-link" href="#Using-News-API-we-can-get-more-information-about-the-market">&#182;</a></h2><p>The Natural Language Toolkit was used to analyze the sentiment of articles collected for a given topic. These sentiments were grouped by date in order to see the volumne and opinion about the keyword on a given day. We chose the keyword "stocks" here but played around with other keywords.</p>
+<h2 id="Using-News-API-we-can-get-more-information-about-the-market">Using News API we can get more information about the market<a class="anchor-link" href="#Using-News-API-we-can-get-more-information-about-the-market">&#182;</a></h2><p>The Natural Language Toolkit was used to analyze the sentiment of articles collected for a given topic. These sentiments were grouped by date in order to see the volumne and opinion about the keyword on a given day. We chose the keywords "market finance stocks" here but played around with other keywords.</p>
 <h4 id="Shout-out-to-my-boy-Jordan-of-newsapi.org-for-giving-me-access-back.-They-changed-their-access-policy-on-monday-from-giving-me-years-of-data-to-only-giving-me-a-100-articles.">Shout out to my boy Jordan of newsapi.org for giving me access back. They changed their access policy on monday from giving me years of data to only giving me a 100 articles.<a class="anchor-link" href="#Shout-out-to-my-boy-Jordan-of-newsapi.org-for-giving-me-access-back.-They-changed-their-access-policy-on-monday-from-giving-me-years-of-data-to-only-giving-me-a-100-articles.">&#182;</a></h4>
 </div>
 </div>
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">articles</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_all_articles</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+    <span class="n">page_number</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">all_articles</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({})</span>
+    
+    <span class="c1"># TODO they changed their API?! WHAT THE HECK</span>
+    <span class="k">while</span> <span class="n">page_number</span> <span class="o">&lt;=</span> <span class="mi">20</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://newsapi.org/v2/everything?&#39;</span>
+           <span class="s1">&#39;q=</span><span class="si">%s</span><span class="s1">&amp;&#39;</span>
+           <span class="s1">&#39;from=</span><span class="si">%s</span><span class="s1">&amp;&#39;</span>
+           <span class="s1">&#39;page=</span><span class="si">%d</span><span class="s1">&amp;&#39;</span>
+           <span class="s1">&#39;language=en&amp;&#39;</span>  <span class="c1"># language is english</span>
+           <span class="s1">&#39;pageSize=100&amp;&#39;</span>  <span class="c1"># maximum page size</span>
+           <span class="s1">&#39;sortBy=popularity&amp;&#39;</span>
+           <span class="s1">&#39;apiKey=</span><span class="si">%s</span><span class="s1">&#39;</span>
+        <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">page_number</span><span class="p">,</span> <span class="n">NEWS_API_KEY</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">news</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">news</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">news</span><span class="p">[</span><span class="s2">&quot;articles&quot;</span><span class="p">]:</span>
+            <span class="k">break</span>
+        <span class="n">all_articles</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">all_articles</span><span class="p">,</span> <span class="n">json_normalize</span><span class="p">(</span><span class="n">news</span><span class="p">[</span><span class="s2">&quot;articles&quot;</span><span class="p">])],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">page_number</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_articles</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">all_articles</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">articles</span><span class="p">[[</span><span class="s2">&quot;description&quot;</span><span class="p">,</span><span class="s2">&quot;title&quot;</span><span class="p">,</span><span class="s2">&quot;publishedAt&quot;</span><span class="p">,</span><span class="s2">&quot;Date&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -11928,7 +11964,7 @@ a.anchor-link {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[41]:</div>
+<div class="prompt output_prompt">Out[27]:</div>
 
 
 
@@ -11951,83 +11987,47 @@ a.anchor-link {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>author</th>
       <th>description</th>
-      <th>publishedAt</th>
-      <th>source.id</th>
-      <th>source.name</th>
       <th>title</th>
-      <th>url</th>
-      <th>urlToImage</th>
+      <th>publishedAt</th>
       <th>Date</th>
-      <th>sentiment</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>Alicia Adamczyk on Two Cents, shared by Alicia...</td>
-      <td>So you’re a freelancer and you want to know wh...</td>
-      <td>2018-05-25T16:30:00Z</td>
-      <td>None</td>
-      <td>Lifehacker.com</td>
-      <td>How Freelancers Can Save for Retirement Beyond...</td>
-      <td>https://twocents.lifehacker.com/how-freelancer...</td>
-      <td>https://i.kinja-img.com/gawker-media/image/upl...</td>
-      <td>2018-05-25</td>
-      <td>Positive</td>
+      <td>Each Monday we’re tackling one of your pressin...</td>
+      <td>Investing Is Risky and Unethical and You Shoul...</td>
+      <td>2018-04-02T17:30:00Z</td>
+      <td>2018-04-02</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>Mariella Moon</td>
-      <td>Tesla has asked a federal court in San Francis...</td>
-      <td>2018-05-27T01:29:00Z</td>
-      <td>engadget</td>
-      <td>Engadget</td>
-      <td>Tesla denies exaggerating Model 3 production p...</td>
-      <td>https://www.engadget.com/2018/05/26/tesla-mode...</td>
-      <td>https://o.aolcdn.com/images/dims?thumbnail=120...</td>
-      <td>2018-05-27</td>
-      <td>Negative</td>
+      <td>Investing is an important part of a healthy fi...</td>
+      <td>Investing Is Just One Piece of Your Financial ...</td>
+      <td>2018-03-06T20:30:00Z</td>
+      <td>2018-03-06</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>Brian Heater</td>
-      <td>Baidu’s stocks took a hit earlier today after ...</td>
-      <td>2018-05-18T18:07:52Z</td>
-      <td>techcrunch</td>
-      <td>TechCrunch</td>
-      <td>Baidu’s top AI exec is stepping down</td>
-      <td>http://techcrunch.com/2018/05/18/baidus-top-ai...</td>
-      <td>https://techcrunch.com/wp-content/uploads/2018...</td>
-      <td>2018-05-18</td>
-      <td>Neutral</td>
+      <td>You know you should be saving for retirement, ...</td>
+      <td>Schedule a Retirement Check-in</td>
+      <td>2018-02-05T20:00:00Z</td>
+      <td>2018-02-05</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>Matt Burns</td>
-      <td>Today at Apple’s World Wide Developer Conferen...</td>
-      <td>2018-06-04T19:26:02Z</td>
-      <td>techcrunch</td>
-      <td>TechCrunch</td>
-      <td>Apple to bring iOS apps to macOS</td>
-      <td>http://techcrunch.com/2018/06/04/apple-is-brin...</td>
-      <td>https://techcrunch.com/wp-content/uploads/2018...</td>
-      <td>2018-06-04</td>
-      <td>Positive</td>
+      <td>Top officials from the SEC have publicly state...</td>
+      <td>SEC Says Ether and Bitcoin Cryptocurrencies Ar...</td>
+      <td>2018-06-14T20:19:42Z</td>
+      <td>2018-06-14</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>Sarah Perez</td>
-      <td>Target is lowering the price of its next-day d...</td>
-      <td>2018-05-15T14:01:00Z</td>
-      <td>techcrunch</td>
-      <td>TechCrunch</td>
-      <td>Target’s next-day delivery service, Target Res...</td>
-      <td>http://techcrunch.com/2018/05/15/targets-next-...</td>
-      <td>https://techcrunch.com/wp-content/uploads/2014...</td>
-      <td>2018-05-15</td>
-      <td>Positive</td>
+      <td>It’s no longer just a place to look up stock m...</td>
+      <td>Investors can now make trades on Yahoo Finance</td>
+      <td>2017-09-26T13:00:57Z</td>
+      <td>2017-09-26</td>
     </tr>
   </tbody>
 </table>
@@ -12042,7 +12042,7 @@ a.anchor-link {
 </div></section></section><section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
@@ -12067,7 +12067,7 @@ a.anchor-link {
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sentiment_by_date</span> <span class="o">=</span> <span class="n">get_sentiment_by_date</span><span class="p">(</span><span class="n">articles</span><span class="p">)</span>
@@ -12085,7 +12085,7 @@ a.anchor-link {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[32]:</div>
+<div class="prompt output_prompt">Out[9]:</div>
 
 
 
@@ -12121,34 +12121,34 @@ a.anchor-link {
   </thead>
   <tbody>
     <tr>
-      <th>2018-05-14</th>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
+      <th>2017-09-22</th>
+      <td>3</td>
+      <td>7</td>
+      <td>6</td>
     </tr>
     <tr>
-      <th>2018-05-15</th>
+      <th>2017-09-23</th>
+      <td>0</td>
+      <td>0</td>
       <td>4</td>
-      <td>0</td>
+    </tr>
+    <tr>
+      <th>2017-09-24</th>
+      <td>1</td>
+      <td>1</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>2018-05-16</th>
+      <th>2017-09-25</th>
+      <td>3</td>
       <td>2</td>
-      <td>1</td>
-      <td>1</td>
+      <td>5</td>
     </tr>
     <tr>
-      <th>2018-05-17</th>
-      <td>0</td>
+      <th>2017-09-26</th>
       <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>2018-05-18</th>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
+      <td>7</td>
+      <td>4</td>
     </tr>
     <tr>
       <th>...</th>
@@ -12157,38 +12157,38 @@ a.anchor-link {
       <td>...</td>
     </tr>
     <tr>
-      <th>2018-06-08</th>
-      <td>2</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
       <th>2018-06-10</th>
-      <td>0</td>
+      <td>2</td>
       <td>1</td>
       <td>0</td>
     </tr>
     <tr>
       <th>2018-06-11</th>
-      <td>0</td>
-      <td>0</td>
       <td>1</td>
+      <td>1</td>
+      <td>4</td>
     </tr>
     <tr>
       <th>2018-06-12</th>
-      <td>2</td>
-      <td>2</td>
       <td>0</td>
+      <td>1</td>
+      <td>7</td>
     </tr>
     <tr>
       <th>2018-06-13</th>
-      <td>1</td>
-      <td>0</td>
+      <td>2</td>
       <td>3</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2018-06-14</th>
+      <td>1</td>
+      <td>1</td>
+      <td>5</td>
     </tr>
   </tbody>
 </table>
-<p>26 rows × 3 columns</p>
+<p>261 rows × 3 columns</p>
 </div>
 </div>
 
@@ -12198,78 +12198,13 @@ a.anchor-link {
 </div>
 
 </div></section></section><section><section>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
-<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">sentiment_by_date</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;sentiment_by_date.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Back-to-our-main-presentation"><a href="http://127.0.0.1:8000/Presentation.slides.html#/3">Back to our main presentation</a><a class="anchor-link" href="#Back-to-our-main-presentation">&#182;</a></h3>
 </div>
 </div>
-</div>
-
-</div></section></section><section><section>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[61]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">date1</span> <span class="o">=</span> <span class="s2">&quot;2017-06-15&quot;</span>
-<span class="n">url</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://newsapi.org/v2/everything?&#39;</span>
-           <span class="s1">&#39;q=</span><span class="si">%s</span><span class="s1">&amp;&#39;</span>
-           <span class="s1">&#39;from=</span><span class="si">%s</span><span class="s1">&amp;&#39;</span>
-           <span class="s1">&#39;page=</span><span class="si">%d</span><span class="s1">&amp;&#39;</span>
-           <span class="s1">&#39;language=en&amp;&#39;</span>  <span class="c1"># language is english</span>
-           <span class="s1">&#39;pageSize=10&amp;&#39;</span>  <span class="c1"># maximum page size</span>
-           <span class="s1">&#39;sortBy=popularity&amp;&#39;</span>
-           <span class="s1">&#39;apiKey=</span><span class="si">%s</span><span class="s1">&#39;</span>
-           
-        <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;stocks&quot;</span><span class="p">,</span> <span class="n">date1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">NEWS_API_KEY</span><span class="p">)</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="c1"># news = json.loads(response.text)</span>
-<span class="n">response</span><span class="o">.</span><span class="n">text</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[61]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;{&#34;status&#34;:&#34;ok&#34;,&#34;totalResults&#34;:222263,&#34;articles&#34;:[{&#34;source&#34;:{&#34;id&#34;:null,&#34;name&#34;:&#34;Lifehacker.com&#34;},&#34;author&#34;:&#34;Patrick Allan&#34;,&#34;title&#34;:&#34;What Is a \\&#34;Bump Stock\\&#34; And Why Is It so Dangerous?&#34;,&#34;description&#34;:&#34;The shooter who recently terrorized the Las Vegas strip, leaving 59 dead and hundreds injured, used gun modifications called “bump stocks” to make his rifles even deadlier. But what are they exactly? Read more...&#34;,&#34;url&#34;:&#34;https://lifehacker.com/what-is-a-bump-stock-and-why-is-it-so-dangerous-1819180018&#34;,&#34;urlToImage&#34;:&#34;https://i.kinja-img.com/gawker-media/image/upload/s--0m7CTp18--/c_fill,fl_progressive,g_center,h_450,q_80,w_800/dj0ewuz1s8nmscib6yhq.jpg&#34;,&#34;publishedAt&#34;:&#34;2017-10-05T19:30:00Z&#34;},{&#34;source&#34;:{&#34;id&#34;:null,&#34;name&#34;:&#34;Lifehacker.com&#34;},&#34;author&#34;:&#34;Alicia Adamczyk on Two Cents, shared by Alicia Adamczyk to Lifehacker&#34;,&#34;title&#34;:&#34;Investing Is Risky and Unethical and You Should Do It Anyway&#34;,&#34;description&#34;:&#34;Each Monday we’re tackling one of your pressing personal finance questions by asking a handful of money experts for their advice. If you have a general question or money concern, or just want to talk about something PeFi-related, leave it in the comments or e…&#34;,&#34;url&#34;:&#34;https://twocents.lifehacker.com/investing-is-risky-and-unethical-and-you-should-do-it-a-1824157984&#34;,&#34;urlToImage&#34;:&#34;https://i.kinja-img.com/gawker-media/image/upload/s--tYxQRq9---/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/nbi81mp2pfedhgtnvl1o.jpg&#34;,&#34;publishedAt&#34;:&#34;2018-04-02T17:30:00Z&#34;},{&#34;source&#34;:{&#34;id&#34;:null,&#34;name&#34;:&#34;Lifehacker.com&#34;},&#34;author&#34;:&#34;Claire Lower on Skillet, shared by Claire Lower to Lifehacker&#34;,&#34;title&#34;:&#34;Fried Leek Greens Are Excellent on Scrambled Eggs&#34;,&#34;description&#34;:&#34;The green parts of the leek doesn’t get enough love. Almost every leek-containing recipe tells you that you don’t need them, that they’re too tough, and unworthy of you. This is all false. Though they are a bit tougher than their white counterparts, they have…&#34;,&#34;url&#34;:&#34;https://skillet.lifehacker.com/fried-leek-greens-are-excellent-on-scrambled-eggs-1825902069&#34;,&#34;urlToImage&#34;:&#34;https://i.kinja-img.com/gawker-media/image/upload/s--ydRwKMHv--/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/socd7jypvfejw9rtnk0k.jpg&#34;,&#34;publishedAt&#34;:&#34;2018-05-10T16:00:00Z&#34;},{&#34;source&#34;:{&#34;id&#34;:null,&#34;name&#34;:&#34;Lifehacker.com&#34;},&#34;author&#34;:&#34;Alicia Adamczyk on Two Cents, shared by Alicia Adamczyk to Lifehacker&#34;,&#34;title&#34;:&#34;What\&#39;s the \&#39;Death\&#39; Tax?&#34;,&#34;description&#34;:&#34;When you pass away, is Uncle Sam coming for all of your remaining assets? Read more...&#34;,&#34;url&#34;:&#34;https://twocents.lifehacker.com/whats-the-death-tax-1825563542&#34;,&#34;urlToImage&#34;:&#34;https://i.kinja-img.com/gawker-media/image/upload/s--fxMZ0V-D--/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/en6gsfwhyqhtunfqjpmo.jpg&#34;,&#34;publishedAt&#34;:&#34;2018-04-30T14:00:00Z&#34;},{&#34;source&#34;:{&#34;id&#34;:null,&#34;name&#34;:&#34;Thetakeout.com&#34;},&#34;author&#34;:&#34;Kevin Pang on The Takeout, shared by Virginia K. Smith to Lifehacker&#34;,&#34;title&#34;:&#34;How much better are Better Than Boullion\&#39;s vegetarian options?&#34;,&#34;description&#34;:&#34;The seismic shift in the bouillon soup base world, if such a thing exists, is the emergence of Better Than Bouillon as the go-to brand for instant stocks. Home cooks seem to love it—count myself among the fans—because unlike the powdered cube stuff (artificia…&#34;,&#34;url&#34;:&#34;https://thetakeout.com/how-much-better-are-better-than-boullions-vegetarian-op-1821812650&#34;,&#34;urlToImage&#34;:&#34;https://i.kinja-img.com/gawker-media/image/upload/s--j3C1oncr--/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/vsl5zq6qqdthgnz0lvva.jpg&#34;,&#34;publishedAt&#34;:&#34;2018-01-05T18:54:00Z&#34;},{&#34;source&#34;:{&#34;id&#34;:null,&#34;name&#34;:&#34;Lifehacker.com&#34;},&#34;author&#34;:&#34;Patrick Allan&#34;,&#34;title&#34;:&#34;What Are the Assault Weapon Ban Loopholes Senator Marco Rubio Was Talking About?&#34;,&#34;description&#34;:&#34;Last night, CNN held a town hall discussion with those affected by the Marjory Stoneman Douglas High School shooting, Florida officials, and an NRA rep. In attendance was Senator Marco Rubio, who had some  things to say about the recently proposed and rejecte…&#34;,&#34;url&#34;:&#34;https://lifehacker.com/what-are-the-assault-weapon-ban-loopholes-senator-marco-1823227038&#34;,&#34;urlToImage&#34;:&#34;https://i.kinja-img.com/gawker-media/image/upload/s--H9aFML3d--/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/xoinfml4jqjrthl5na56.png&#34;,&#34;publishedAt&#34;:&#34;2018-02-22T21:00:00Z&#34;},{&#34;source&#34;:{&#34;id&#34;:null,&#34;name&#34;:&#34;Lifehacker.com&#34;},&#34;author&#34;:&#34;Alicia Adamczyk on Two Cents, shared by Alicia Adamczyk to Lifehacker&#34;,&#34;title&#34;:&#34;How Different Retirement Income Is Taxed&#34;,&#34;description&#34;:&#34;We all dream of the day when we can leave a boring corporate job or unfulfilling career behind for good, take our retirement savings and spend more time with our family or take that trip we’ve been planning for our entire lives. And while you’ll have a millio…&#34;,&#34;url&#34;:&#34;https://twocents.lifehacker.com/how-different-retirement-income-is-taxed-1825581598&#34;,&#34;urlToImage&#34;:&#34;https://i.kinja-img.com/gawker-media/image/upload/s--_jNg4rra--/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/hxpjxzkbofbafaqrwf0j.jpg&#34;,&#34;publishedAt&#34;:&#34;2018-04-27T15:00:00Z&#34;},{&#34;source&#34;:{&#34;id&#34;:null,&#34;name&#34;:&#34;Lifehacker.com&#34;},&#34;author&#34;:&#34;Nick Douglas&#34;,&#34;title&#34;:&#34;That Lemon Wedge in Your Drink Is Probably Filthy&#34;,&#34;description&#34;:&#34;The lemon wedge in your drink has a bad reputation, and the evidence for it seems obvious: No one at a restaurant washes the outside of a lemon, but then they throw that wedge onto your glass, sometimes letting the rind soak right in the drink. And according …&#34;,&#34;url&#34;:&#34;https://lifehacker.com/that-lemon-wedge-in-your-drink-is-probably-filthy-1820336248&#34;,&#34;urlToImage&#34;:&#34;https://i.kinja-img.com/gawker-media/image/upload/s--iA56zv5u--/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/s0ddmn01jrjltg0lxqop.jpg&#34;,&#34;publishedAt&#34;:&#34;2017-11-10T19:30:00Z&#34;},{&#34;source&#34;:{&#34;id&#34;:null,&#34;name&#34;:&#34;Lifehacker.com&#34;},&#34;author&#34;:&#34;Alicia Adamczyk on Two Cents, shared by Alicia Adamczyk to Lifehacker&#34;,&#34;title&#34;:&#34;Investing Is Just One Piece of Your Financial Puzzle&#34;,&#34;description&#34;:&#34;Investing is an important part of a healthy financial life. You want your money to grow, and, short of winning the lottery, investing is the best way to do that. But as Jonathan Clements, the editor of Humble Dollar, reminds us in his newsletter, it’s hardly …&#34;,&#34;url&#34;:&#34;https://twocents.lifehacker.com/investing-is-just-one-piece-of-your-financial-puzzle-1823524821&#34;,&#34;urlToImage&#34;:&#34;https://i.kinja-img.com/gawker-media/image/upload/s--8urvY2uV--/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/hlxzkizraznabgt1qzwg.jpg&#34;,&#34;publishedAt&#34;:&#34;2018-03-06T20:30:00Z&#34;},{&#34;source&#34;:{&#34;id&#34;:null,&#34;name&#34;:&#34;Lifehacker.com&#34;},&#34;author&#34;:&#34;Nick Douglas&#34;,&#34;title&#34;:&#34;The Worst Life Hacks of 2017&#34;,&#34;description&#34;:&#34;Updating your software is one of the most basic elements of maintaining your devices. Updates fix bugs and security flaws, introduce  new features, and take advantage of new hardware capabilities. Every major update includes a few new bugs or annoyances, mayb…&#34;,&#34;url&#34;:&#34;https://lifehacker.com/the-worst-life-hacks-of-2017-1821589638&#34;,&#34;urlToImage&#34;:&#34;https://i.kinja-img.com/gawker-media/image/upload/s--QnpRgjkx--/c_fill,fl_progressive,g_center,h_900,q_80,w_1600/bhz6mn7otgluky410e5d.jpg&#34;,&#34;publishedAt&#34;:&#34;2017-12-27T20:54:00Z&#34;}]}&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div></section></section><section><section>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>jupyter nbconvert NewsDataCleaning.ipynb --to slides --post serve
-</pre></div>
-
-</div>
-</div>
-</div>
-
 </div>
 </div>
 </div>
