@@ -11989,7 +11989,7 @@ dtype: object</pre>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Trend-Data-From-Google">Trend Data From Google<a class="anchor-link" href="#Trend-Data-From-Google">&#182;</a></h2><p>Wanted to get something working which could scrape the API for consistent readings over a long period of time. THIS WAS A STRUGGLE.</p>
+<h2 id="Trend-Data-From-Google">Trend Data From Google<a class="anchor-link" href="#Trend-Data-From-Google">&#182;</a></h2><p>There is no publicly available API for google trends, so I looked into scraping the website in order to get the csv download link. This was challenging.</p>
 
 </div>
 </div>
@@ -12059,7 +12059,7 @@ dtype: object</pre>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>{&#39;NID&#39;: &#39;132=ChqLFXUNUDFfaKE5C6wjMO8yu6rzYo2YCEfW9SHksUec-O-ufR8OqE519zXvkBIGez0oiNzer50KK1engSzSEV9Rmmj6XVxPdsXlxzVn0yooDuHxfNh5JDR7Drs4hRGF&#39;}</pre>
+<pre>{&#39;NID&#39;: &#39;132=SQslp1eRsci2Boo8il6Tvmxk4ubdhlFaG7DRjTnXEFmSnNSOHyR3tCCbugIYpuQr_b9zgTDeyQEKD6ubCiiER4FcZV_pe11Ocot4Nr94m5mn5CmJffB2dnCVSyjOwIJV&#39;}</pre>
 </div>
 
 </div>
@@ -12226,7 +12226,7 @@ dtype: object</pre>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;ize:100% 100%}}#logo{display:inline-block;height:54px;width:150px}&lt;/style&gt;&lt;div id=&#34;af-error-container&#34;&gt;&lt;a href=//www.google.com&gt;&lt;span id=logo aria-label=Google&gt;&lt;/span&gt;&lt;/a&gt;&lt;p&gt;&lt;b&gt;401.&lt;/b&gt; &lt;ins&gt;That’s an error.&lt;/ins&gt;&lt;p&gt;The requested URL was not found on this server. &lt;ins&gt;That’s all we know.&lt;/ins&gt;&lt;/div&gt;&#39;</pre>
+<pre>&#39;nd-size:100% 100%}}#logo{display:inline-block;height:54px;width:150px}&lt;/style&gt;&lt;div id=&#34;af-error-container&#34;&gt;&lt;a href=//www.google.com&gt;&lt;span id=logo aria-label=Google&gt;&lt;/span&gt;&lt;/a&gt;&lt;p&gt;&lt;b&gt;500.&lt;/b&gt; &lt;ins&gt;That’s an error.&lt;/ins&gt;&lt;p&gt;There was an error. Please try again later. &lt;ins&gt;That’s all we know.&lt;/ins&gt;&lt;/div&gt;&#39;</pre>
 </div>
 
 </div>
@@ -12234,12 +12234,12 @@ dtype: object</pre>
 </div>
 </div>
 
-</div></section></section><section><section>
+</div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Dang!-After-all-that-we-still-cant-download-a-csv.">Dang! After all that we still cant download a csv.<a class="anchor-link" href="#Dang!-After-all-that-we-still-cant-download-a-csv.">&#182;</a></h3><p>Something seems wrong with the way we are generating a token. The plan was to write a function to download the daily data for our time frame (over 5 years). However instead we are just going to use the less granular data and call it a day.</p>
+<h3 id="Dang!-After-all-that-we-still-cant-programatically-download-a-csv.">Dang! After all that we still cant programatically download a csv.<a class="anchor-link" href="#Dang!-After-all-that-we-still-cant-programatically-download-a-csv.">&#182;</a></h3><p>Something seems wrong with the way we are generating a token. The plan was to write a function to download the daily data for our time frame (over 5 years). However instead we are just going to use the less granular data and call it a day.</p>
 
 </div>
 </div>
@@ -12310,17 +12310,6 @@ dtype: object</pre>
   </thead>
   <tbody>
     <tr>
-      <th>2018-06-09</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1.301751e+11</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>35.0</td>
-      <td>36.0</td>
-    </tr>
-    <tr>
       <th>2018-06-10</th>
       <td>NaN</td>
       <td>NaN</td>
@@ -12364,6 +12353,17 @@ dtype: object</pre>
       <td>27.0</td>
       <td>34.0</td>
     </tr>
+    <tr>
+      <th>2018-06-14</th>
+      <td>1305.30</td>
+      <td>66.89</td>
+      <td>NaN</td>
+      <td>1.079462e+11</td>
+      <td>105.789062</td>
+      <td>119.43750</td>
+      <td>27.0</td>
+      <td>34.0</td>
+    </tr>
   </tbody>
 </table>
 </div>
@@ -12382,6 +12382,19 @@ dtype: object</pre>
 <h3 id="News-Sentiment"><a href="http://127.0.0.1:8000/NewsDataCleaning.slides.html#/">News Sentiment</a><a class="anchor-link" href="#News-Sentiment">&#182;</a></h3><h3 id="Back-to-our-main-presentation"><a href="http://127.0.0.1:8000/Presentation.slides.html#/3">Back to our main presentation</a><a class="anchor-link" href="#Back-to-our-main-presentation">&#182;</a></h3>
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>rm DataCleaning.slides.html
+</pre></div>
+
+</div>
+</div>
+</div>
+
 </div>
 </div>
 </div>

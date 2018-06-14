@@ -11905,34 +11905,22 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Our-Project-Name">Our Project Name<a class="anchor-link" href="#Our-Project-Name">&#182;</a></h1><p><strong>Our Goal:</strong> Predict S&amp;P 500 prices using publicly available data</p>
-<p><strong>Our Approach:</strong> Use an LSTM and Google Trends API to perform</p>
+<h1 id="Standard-and-Poor-Machine-Learning-Techniques">Standard and Poor Machine Learning Techniques<a class="anchor-link" href="#Standard-and-Poor-Machine-Learning-Techniques">&#182;</a></h1><p><strong> Standard and Poor's 500 is a stock market index based on the market capitalization of 500 large companies. </strong></p>
+<p><strong>Question:</strong> Is it possible to predict the movements of S&amp;P 500 Index using publicly available data? Is there any hope for machine learning algorithms to make market predictions?</p>
+<p><strong>Approach:</strong> Use an LSTM network and various datasources to predict market movements.</p>
 
 </div>
 </div>
-</div><div class="fragment">
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>However, we ran into some issues.</p>
-<ul>
-<li>Google Trends API is garbage</li>
-<li>News API as the backup revoked access</li>
-<li>LSTM drawbacks for stock markets</li>
-</ul>
-
-</div>
-</div>
-</div></div></section></section><section><section>
+</div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="An-overview-of-our-data">An overview of our data<a class="anchor-link" href="#An-overview-of-our-data">&#182;</a></h2><ul>
-<li>Quandle API is awesome!</li>
-<li>Google Trends has no API. Scraping it was too dificult.</li>
-<li>NewsAPI as a replacement data source.</li>
+<li>Quandle API for stocks and commodities</li>
+<li>Yahoo Finance and Kaggle for S&amp;P</li>
+<li>Google Trends for market interest</li>
+<li>NewsAPI for market interest</li>
 </ul>
 
 </div>
@@ -11977,11 +11965,7 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Summary-of-the-data-we-used-in-our-model">Summary of the data we used in our model<a class="anchor-link" href="#Summary-of-the-data-we-used-in-our-model">&#182;</a></h2><ul>
-<li>Quandle for commodities</li>
-<li>Google Trends API for search volume</li>
-<li>NewsAPI for market "sentiment"</li>
-</ul>
+<h2 id="Summary-of-the-data-we-used-in-our-model">Summary of the data we used in our model<a class="anchor-link" href="#Summary-of-the-data-we-used-in-our-model">&#182;</a></h2><p><img src="images/all_data.JPG" width="550"/></p>
 
 </div>
 </div>
@@ -11990,11 +11974,10 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Long-Short-Term-Memory-Networks">Long Short Term Memory Networks<a class="anchor-link" href="#Long-Short-Term-Memory-Networks">&#182;</a></h2>
-<pre><code>Markets have very different statistical characteristics than natural phenomena such as weather patterns. Trying to use machine learning to beat markets, when you only have access to publicly available data, is a difficult endeavor, and you’re likely to waste your time and resources with nothing to show for it.
-
-Always remember that when it comes to markets, past performance is not a good predictor of future returns—looking in the rear-view mirror is a bad way to drive. Machine learning, on the other hand, is applicable to datasets where the past is a good predictor of the future.</code></pre>
+<h2 id="Neural-Networks-for-Market-Prediction">Neural Networks for Market Prediction<a class="anchor-link" href="#Neural-Networks-for-Market-Prediction">&#182;</a></h2>
+<pre><code>When it comes to markets, past performance is not a good predictor of future returns looking in the rear-view mirror is a bad way to drive. Machine learning, on the other hand, is applicable to datasets where the past is a good predictor of the future.</code></pre>
 <p><em>from <strong>Deep Learning with Python</strong> by Francois Chollet</em></p>
+<p><img src="https://memegenerator.net/img/instances/74873992.jpg" width="500" align="middle"/></p>
 
 </div>
 </div>
@@ -12003,10 +11986,20 @@ Always remember that when it comes to markets, past performance is not a good pr
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="LSTMs-are-a-type-of-Recurrent-Neural-Network-(RNN)">LSTMs are a type of Recurrent Neural Network (RNN)<a class="anchor-link" href="#LSTMs-are-a-type-of-Recurrent-Neural-Network-(RNN)">&#182;</a></h2><p>A piece of a neural network, A, looks at some input xt and outputs a value ht. A loop allows information to be passed from one step of the network to the next.</p>
-<p>&lt;img src="<a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/img/RNN-rolled.png">https://colah.github.io/posts/2015-08-Understanding-LSTMs/img/RNN-rolled.png</a>" ,width=60,height=60&gt;</p>
-<p>A recurrent neural network can be thought of as multiple copies of the same network, each passing a message to a successor. This chain-like nature reveals that recurrent neural networks are intimately related to sequences and lists. They’re the natural architecture of neural network to use for such data.</p>
-<p>&lt;img src="<a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/img/RNN-unrolled.png">https://colah.github.io/posts/2015-08-Understanding-LSTMs/img/RNN-unrolled.png</a>" ,width=400,height=60&gt;</p>
+<h2 id="Recurrent-Neural-Network-(RNN)">Recurrent Neural Network (RNN)<a class="anchor-link" href="#Recurrent-Neural-Network-(RNN)">&#182;</a></h2><p>Highly complex pattern recognition can be achieved by using neural networks.</p>
+<p>When using time series data, we’ll need to use recurrent neural networks that allow us to operate over <em>sequences</em> of vectors.</p>
+<p><img src="https://colah.github.io/posts/2015-08-Understanding-LSTMs/img/RNN-rolled.png" width="100"/></p>
+<p>The appeal RNNs is the idea that they might be able to connect previous information to the present task. A recurrent neural network can conceptually be unfolded into multiple copies of the same network, each passing a message to a successor.</p>
+<p><img src="https://colah.github.io/posts/2015-08-Understanding-LSTMs/img/RNN-unrolled.png" width=400 height=60></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Long-Short-Term-Memory-(LSTM)-Networks">Long Short Term Memory (LSTM) Networks<a class="anchor-link" href="#Long-Short-Term-Memory-(LSTM)-Networks">&#182;</a></h2><p><img src="https://colah.github.io/posts/2015-08-Understanding-LSTMs/img/LSTM3-chain.png" width=600 height=80></p>
 
 </div>
 </div>
@@ -12015,17 +12008,75 @@ Always remember that when it comes to markets, past performance is not a good pr
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="An-LSTM-contains-four-interacting-layers">An LSTM contains four interacting layers<a class="anchor-link" href="#An-LSTM-contains-four-interacting-layers">&#182;</a></h2><p>&lt;img src="<a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/img/LSTM3-chain.png">https://colah.github.io/posts/2015-08-Understanding-LSTMs/img/LSTM3-chain.png</a>" ,width=600,height=80&gt;</p>
+<h2 id="Generating-predictions">Generating predictions<a class="anchor-link" href="#Generating-predictions">&#182;</a></h2><p><img src="images/sliding_window.jpg" width="800"/></p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Commodities-and-past-stock-data-only">Commodities and past stock data only<a class="anchor-link" href="#Commodities-and-past-stock-data-only">&#182;</a></h2><h4 id="Training-could-not-fit-well">Training could not fit well<a class="anchor-link" href="#Training-could-not-fit-well">&#182;</a></h4><p><img src="images/training getting nowhere loss vs epoch.JPG" width="800"/></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Predictions">Predictions<a class="anchor-link" href="#Predictions">&#182;</a></h4><p><img src="images/all predictions.JPG" width="800"/></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="A-closer-look">A closer look<a class="anchor-link" href="#A-closer-look">&#182;</a></h4><p><img src="images/predictions close up.JPG" width="800"/></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Google-Trends-and-News-Sentiment">Google Trends and News Sentiment<a class="anchor-link" href="#Google-Trends-and-News-Sentiment">&#182;</a></h2><p>Adding google trends gives us more of the oscillations
+<img src="images/with trends.JPG" width="800"/></p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Adding daily news sentiment increases this
+<img src="images/news_pred.JPG" width="800"/></p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><p>We didn't get very accurate results with public data and our lack of domain knowledge.</p>
+<p>However the pipeline we built could be a powerful tool for someone with better resources and knowledge.</p>
+<p><img src="http://i.huffpost.com/gen/1541321/images/o-THE-WOLF-OF-WALL-STREET-facebook.jpg" width="400"/></p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>jupyter nbconvert Presentation.ipynb --to slides --post serve
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls
 </pre></div>
 
 </div>
@@ -12042,19 +12093,13 @@ Always remember that when it comes to markets, past performance is not a good pr
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[NbConvertApp] Converting notebook Presentation.ipynb to slides
-[NbConvertApp] Writing 261836 bytes to Presentation.slides.html
-[NbConvertApp] Redirecting reveal.js requests to https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0
-Serving your slides at http://127.0.0.1:8000/Presentation.slides.html
-Use Control-C to stop this server
-WARNING:tornado.access:404 GET /custom.css (127.0.0.1) 3.58ms
-WARNING:tornado.access:404 GET /custom.css (127.0.0.1) 1.29ms
-WARNING:tornado.access:404 GET /custom.css (127.0.0.1) 1.14ms
-WARNING:tornado.access:404 GET /custom.css (127.0.0.1) 1.08ms
-WARNING:tornado.access:404 GET /custom.css (127.0.0.1) 1.09ms
-^C
-
-Interrupted
+<pre>DataCleaning.ipynb           RNN.ipynb
+DataCleaning.slides.html     daily_stock.pkl
+NewsDataCleaning.ipynb       <span class="ansi-cyan-fg">data</span>
+NewsDataCleaning.slides.html <span class="ansi-cyan-fg">images</span>
+Presentation.ipynb           <span class="ansi-cyan-fg">pickle_jar</span>
+Project.ipynb                predictors.pkl
+README.md                    <span class="ansi-cyan-fg">trends_data</span>
 </pre>
 </div>
 </div>
