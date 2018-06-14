@@ -11912,146 +11912,6 @@ a.anchor-link {
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">NEWS_API_KEY</span> <span class="o">=</span> <span class="s2">&quot;c07df8265f264b20a0c2646a1740193e&quot;</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">import</span> <span class="nn">json</span>
-
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">pandas.io.json</span> <span class="k">import</span> <span class="n">json_normalize</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">max_rows</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">nltk.sentiment.util</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div></section></section><section><section>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_all_articles</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
-    <span class="n">page_number</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">all_articles</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({})</span>
-    
-    <span class="c1"># TODO fuck they changed their API</span>
-    <span class="k">while</span> <span class="n">page_number</span> <span class="o">&lt;=</span> <span class="mi">20</span><span class="p">:</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://newsapi.org/v2/everything?&#39;</span>
-           <span class="s1">&#39;q=</span><span class="si">%s</span><span class="s1">&amp;&#39;</span>
-           <span class="s1">&#39;from=</span><span class="si">%s</span><span class="s1">&amp;&#39;</span>
-           <span class="s1">&#39;page=</span><span class="si">%d</span><span class="s1">&amp;&#39;</span>
-           <span class="s1">&#39;language=en&amp;&#39;</span>  <span class="c1"># language is english</span>
-           <span class="s1">&#39;pageSize=100&amp;&#39;</span>  <span class="c1"># maximum page size</span>
-           <span class="s1">&#39;sortBy=popularity&amp;&#39;</span>
-           <span class="s1">&#39;apiKey=</span><span class="si">%s</span><span class="s1">&#39;</span>
-        <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">page_number</span><span class="p">,</span> <span class="n">NEWS_API_KEY</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-        <span class="n">news</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">news</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">news</span><span class="p">[</span><span class="s2">&quot;articles&quot;</span><span class="p">]:</span>
-            <span class="k">break</span>
-        <span class="n">all_articles</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">all_articles</span><span class="p">,</span> <span class="n">json_normalize</span><span class="p">(</span><span class="n">news</span><span class="p">[</span><span class="s2">&quot;articles&quot;</span><span class="p">])],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">page_number</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_articles</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">all_articles</span>
-
-<span class="k">def</span> <span class="nf">clean_articles</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">publishedAt</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">df</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div></section></section><section><section>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">StringIO</span>
-
-<span class="k">def</span> <span class="nf">get_sentiment</span><span class="p">(</span><span class="n">articles</span><span class="p">):</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">s</span>
-    <span class="n">articles</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">sentiment</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">demo_liu_hu_lexicon</span><span class="p">)</span>
-    <span class="c1"># WHY ON EARTH WOULD YOU WRITE A FUNCTION THAT PRINTS INSTEAD OF RETURNING?</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">__stdout__</span>
-    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-
-<span class="k">def</span> <span class="nf">get_sentiment_by_date</span><span class="p">(</span><span class="n">articles</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">articles</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;Date&quot;</span><span class="p">,</span><span class="s2">&quot;sentiment&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div><div class="fragment">
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">articles</span> <span class="o">=</span> <span class="n">get_all_articles</span><span class="p">(</span><span class="s2">&quot;stocks&quot;</span><span class="p">,</span> <span class="s2">&quot;2017-05-14&quot;</span><span class="p">)</span>
-<span class="n">articles</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div></div><div class="fragment">
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">articles</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div></div></section></section><section><section>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[46]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">articles</span> <span class="o">=</span> <span class="n">clean_articles</span><span class="p">(</span><span class="n">articles</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div><div class="fragment">
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[47]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">articles</span><span class="p">[</span><span class="s2">&quot;sentiment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_sentiment</span><span class="p">(</span><span class="n">articles</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div></div><div class="fragment">
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 <div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
@@ -12179,7 +12039,32 @@ a.anchor-link {
 </div>
 </div>
 
-</div></div></section></section><section><section>
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">StringIO</span>
+
+<span class="k">def</span> <span class="nf">get_sentiment</span><span class="p">(</span><span class="n">articles</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">s</span>
+    <span class="n">articles</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">sentiment</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">demo_liu_hu_lexicon</span><span class="p">)</span>
+    <span class="c1"># WHY ON EARTH WOULD YOU WRITE A FUNCTION THAT PRINTS INSTEAD OF RETURNING?</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">__stdout__</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">get_sentiment_by_date</span><span class="p">(</span><span class="n">articles</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">articles</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;Date&quot;</span><span class="p">,</span><span class="s2">&quot;sentiment&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[32]:</div>

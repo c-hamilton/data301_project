@@ -11934,10 +11934,10 @@ a.anchor-link {
 <li>Google Trends has no API. Scraping it was too dificult.</li>
 <li>NewsAPI as a replacement data source.</li>
 </ul>
-<h4 id="Let's-go-take-a-peek-into-some-of-our-data-clearning-notebooks">Let's go take a peek into some of our data clearning notebooks<a class="anchor-link" href="#Let's-go-take-a-peek-into-some-of-our-data-clearning-notebooks">&#182;</a></h4>
+
 </div>
 </div>
-</div></section></section><section><section>
+</div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -11962,6 +11962,14 @@ a.anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="Over-a-long-period-of-time">Over a long period of time<a class="anchor-link" href="#Over-a-long-period-of-time">&#182;</a></h4><p><img src="images/weekly_google_trends.png?raw=true" alt="Weekly Google Trends"></p>
 
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Let's-go-take-a-peek-into-some-of-our-data-cleaning-notebooks"><a href="http://127.0.0.1:8000/DataCleaning.slides.html#/">Let's go take a peek into some of our data cleaning notebooks</a><a class="anchor-link" href="#Let's-go-take-a-peek-into-some-of-our-data-cleaning-notebooks">&#182;</a></h3>
 </div>
 </div>
 </div></section></section><section><section>
@@ -12014,7 +12022,7 @@ Always remember that when it comes to markets, past performance is not a good pr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>jupyter nbconvert Presentation.ipynb --to slides --post serve
@@ -12035,32 +12043,18 @@ Always remember that when it comes to markets, past performance is not a good pr
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[NbConvertApp] Converting notebook Presentation.ipynb to slides
-[NbConvertApp] Writing 260297 bytes to Presentation.slides.html
+[NbConvertApp] Writing 261836 bytes to Presentation.slides.html
 [NbConvertApp] Redirecting reveal.js requests to https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0
-Traceback (most recent call last):
-  File &#34;/usr/local/bin/jupyter-nbconvert&#34;, line 11, in &lt;module&gt;
-    sys.exit(main())
-  File &#34;/usr/local/lib/python3.6/site-packages/jupyter_core/application.py&#34;, line 266, in launch_instance
-    return super(JupyterApp, cls).launch_instance(argv=argv, **kwargs)
-  File &#34;/usr/local/lib/python3.6/site-packages/traitlets/config/application.py&#34;, line 658, in launch_instance
-    app.start()
-  File &#34;/usr/local/lib/python3.6/site-packages/nbconvert/nbconvertapp.py&#34;, line 325, in start
-    self.convert_notebooks()
-  File &#34;/usr/local/lib/python3.6/site-packages/nbconvert/nbconvertapp.py&#34;, line 493, in convert_notebooks
-    self.convert_single_notebook(notebook_filename)
-  File &#34;/usr/local/lib/python3.6/site-packages/nbconvert/nbconvertapp.py&#34;, line 466, in convert_single_notebook
-    self.postprocess_single_notebook(write_results)
-  File &#34;/usr/local/lib/python3.6/site-packages/nbconvert/nbconvertapp.py&#34;, line 438, in postprocess_single_notebook
-    self.postprocessor(write_results)
-  File &#34;/usr/local/lib/python3.6/site-packages/nbconvert/postprocessors/base.py&#34;, line 28, in __call__
-    self.postprocess(input)
-  File &#34;/usr/local/lib/python3.6/site-packages/nbconvert/postprocessors/serve.py&#34;, line 95, in postprocess
-    http_server.listen(self.port, address=self.ip)
-  File &#34;/usr/local/lib/python3.6/site-packages/tornado/tcpserver.py&#34;, line 144, in listen
-    sockets = bind_sockets(port, address=address)
-  File &#34;/usr/local/lib/python3.6/site-packages/tornado/netutil.py&#34;, line 163, in bind_sockets
-    sock.bind(sockaddr)
-OSError: [Errno 48] Address already in use
+Serving your slides at http://127.0.0.1:8000/Presentation.slides.html
+Use Control-C to stop this server
+WARNING:tornado.access:404 GET /custom.css (127.0.0.1) 3.58ms
+WARNING:tornado.access:404 GET /custom.css (127.0.0.1) 1.29ms
+WARNING:tornado.access:404 GET /custom.css (127.0.0.1) 1.14ms
+WARNING:tornado.access:404 GET /custom.css (127.0.0.1) 1.08ms
+WARNING:tornado.access:404 GET /custom.css (127.0.0.1) 1.09ms
+^C
+
+Interrupted
 </pre>
 </div>
 </div>
